@@ -2,6 +2,8 @@ import json
 import boto3
 import configparser
 import os
+import pandas as pd
+from io import StringIO
 
 
 # Get the directory of the current script
@@ -21,7 +23,10 @@ with open(local_file_name, "r",encoding='utf-8') as file:
     reader = json.load(file)
     data = [row for row in reader]
 
-print(f'number of rows in the file: {len(data)} \nnumber of columns in the file: {len(data[0])}')
+data = pd.DataFrame(data)
+print(f'number of rows in the file: {data.shape[0]} \nnumber of columns in the file: {data.shape[1]}')
+csv_buffer = StringIO()
+data.to_csv(csv_buffer, index=False) 
 
 
 orders_file_name = "orders_extract.csv"
@@ -47,4 +52,4 @@ s3 = boto3.client('s3',
 s3_file = orders_file_name
 
 # Uploading the file to S3
-s3.upload_file(local_file_name,bucket_name,s3_file)
+s3.put_object(Bucket=bucket_name, Key=s3_file, Body=csv_buffer.getvalue())
