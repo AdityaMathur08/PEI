@@ -3,3 +3,6 @@
 .vscode
 .venv
 *.docx
+*.pyc
+test.ipynb
+*drawio

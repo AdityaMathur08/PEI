@@ -8,6 +8,8 @@ boto3 = "*"
 ipykernel = "*"
 pandas = "*"
 openpyxl = "*"
+pyspark = "*"
+pytest = "*"
 
 [dev-packages]
 
